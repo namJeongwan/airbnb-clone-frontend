@@ -1,3 +1,4 @@
+import Cookie from "js-cookie";
 import axios from "axios";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { queryKey } from "@tanstack/react-query/build/lib/__tests__/utils";
@@ -33,3 +34,38 @@ export const commonLogIn =
 
 export const getMe = () =>
   instance.get(`users/me`).then((response) => response.data);
+
+export const logOut = () =>
+  instance
+    .post(`users/log-out`, null, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((response) => response.data);
+
+export const loginGithub = (code: string) =>
+  instance
+    .post(
+      `/users/github`,
+      { code: code },
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
+    .then((response) => response.status);
+
+export const loginKakao = (code: string) =>
+  instance
+    .post(
+      `/users/kakao`,
+      { code: code },
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
+    .then((response) => response.status);
